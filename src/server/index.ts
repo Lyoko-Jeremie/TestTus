@@ -1,2 +1,2 @@
-import "../appPolyfill"
-import "./www"
+// import "../appPolyfill"
+import './www';

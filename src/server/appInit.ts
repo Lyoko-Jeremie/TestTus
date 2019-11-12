@@ -1,9 +1,9 @@
-import express from "express";
-import path from "path";
-import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
-import logger from "morgan";
-import debug from 'debug'
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import logger from 'morgan';
+import debug from 'debug';
 // import enableWs from "express-ws";
 
 const expressApp = express();
