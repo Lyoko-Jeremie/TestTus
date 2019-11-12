@@ -17,15 +17,33 @@ app.use(logger('dev'));
 // tus-server begin ======================
 import moment from 'moment';
 import {parseInt, ceil, floor} from 'lodash';
-import {TusServer, FileStore, EVENTS} from 'tus-node-server';
+import {TusServer, FileStore, MongoGridFSStore, EVENTS} from 'tus-node-server';
 
 const tusLogger = debug('tusLogger');
 const tusLoggerProgress = debug('tusLogger:Progress');
 
 const tusServer = new TusServer();
-tusServer.datastore = new FileStore({
+// tusServer.datastore = new FileStore({
+//     path: '/tempTestFiles',
+//     relativeLocation: true,
+//     pipListenerConfig: {
+//         dontSendProgressDuringNoData: true,
+//     },
+// });
+
+// Connection URL
+// https://stackoverflow.com/questions/50448272/avoid-current-url-string-parser-is-deprecated-warning-by-setting-usenewurlpars
+// format : mongodb://username:passwd@host:port
+const MongoUrl = process.env.mongodbURL
+    || 'mongodb://username:passwd@host:port';
+const databaseName = 'testGFS';
+const bucketName = 'testBucket';
+tusServer.datastore = new MongoGridFSStore({
     path: '/tempTestFiles',
     relativeLocation: true,
+    uri: MongoUrl,
+    db: databaseName,
+    bucket: bucketName,
     pipListenerConfig: {
         dontSendProgressDuringNoData: true,
     },
