@@ -16,8 +16,10 @@ app.use(logger('dev'));
 
 // tus-server begin ======================
 import moment from 'moment';
-import {parseInt, ceil, floor} from 'lodash';
+import {parseInt, ceil, floor, get} from 'lodash';
 import {TusServer, FileStore, MongoGridFSStore, EVENTS} from 'tus-node-server';
+import {ObjectId} from 'bson';
+import {Base64} from 'js-base64';
 
 const tusLogger = debug('tusLogger');
 const tusLoggerProgress = debug('tusLogger:Progress');
@@ -47,6 +49,20 @@ tusServer.datastore = new MongoGridFSStore({
     pipListenerConfig: {
         dontSendProgressDuringNoData: true,
     },
+    namingFunction: (req) => {
+        const value = get(req.headers, 'upload-metadata', '') as string;
+        const keyPairs = value.split(',')
+            .map((kp) => kp.trim().split(' '));
+        tusLogger(`keyPairs:${JSON.stringify(keyPairs)}`);
+        const filenameL = keyPairs.find(T => T[0] === 'filename');
+        tusLogger(`filenameL:${JSON.stringify(filenameL)}`);
+        if (filenameL && filenameL.length === 2) {
+            // return filenameL[1];
+            return Base64.decode(filenameL[1]);
+        } else {
+            return 'file_' + (new ObjectId()).toHexString();
+        }
+    }
 });
 tusServer.on(EVENTS.EVENT_UPLOAD_COMPLETE, (event) => {
     tusLogger(`Upload complete for file ${JSON.stringify(event)}`);
