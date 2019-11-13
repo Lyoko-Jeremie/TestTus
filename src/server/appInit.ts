@@ -17,14 +17,17 @@ app.use(logger('dev'));
 // tus-server begin ======================
 import moment from 'moment';
 import {parseInt, ceil, floor, get} from 'lodash';
-import {TusServer, FileStore, MongoGridFSStore, EVENTS} from 'tus-node-server';
+import {TusServer, FileStore, MongoGridFSStore, EVENTS, EXPOSED_HEADERS_LIST} from 'tus-node-server';
 import {ObjectId} from 'bson';
 import {Base64} from 'js-base64';
+import cors from 'cors';
 
 const tusLogger = debug('tusLogger');
 const tusLoggerProgress = debug('tusLogger:Progress');
 
-const tusServer = new TusServer();
+const tusServer = new TusServer({
+    disableBuiltinCors: true,
+});
 // tusServer.datastore = new FileStore({
 //     path: '/tempTestFiles',
 //     relativeLocation: true,
@@ -64,16 +67,16 @@ tusServer.datastore = new MongoGridFSStore({
         }
     }
 });
-tusServer.on(EVENTS.EVENT_UPLOAD_COMPLETE, (event) => {
+tusServer.on(EVENTS.EVENT_UPLOAD_COMPLETE, (event: any) => {
     tusLogger(`Upload complete for file ${JSON.stringify(event)}`);
 });
-tusServer.on(EVENTS.EVENT_FILE_CREATED, (event) => {
+tusServer.on(EVENTS.EVENT_FILE_CREATED, (event: any) => {
     tusLogger(`file create for file ${JSON.stringify(event)}`);
 });
-tusServer.on(EVENTS.EVENT_ENDPOINT_CREATED, (event) => {
+tusServer.on(EVENTS.EVENT_ENDPOINT_CREATED, (event: any) => {
     tusLogger(`endpoint create for file ${JSON.stringify(event)}`);
 });
-tusServer.on(EVENTS.EVENT_CHUNK_UPLOADED, (event) => {
+tusServer.on(EVENTS.EVENT_CHUNK_UPLOADED, (event: any) => {
     tusLogger(`uploading CHUNK UPLOADED ${JSON.stringify(event)}`);
     if (event.progress) {
         const value = event.progress;
@@ -104,7 +107,14 @@ tusServer.on(EVENTS.EVENT_CHUNK_UPLOADED, (event) => {
     }
 });
 const uploadApp = express();
-uploadApp.all('*', tusServer.handle.bind(tusServer));
+// uploadApp.all('*', tusServer.handle.bind(tusServer) as any);
+uploadApp.all('*', cors({
+    // origin: true,
+    origin: (origin, callback) => {
+        callback(null, true);
+    },
+    exposedHeaders: EXPOSED_HEADERS_LIST,
+}), tusServer.handle.bind(tusServer) as any);
 app.use('/uploads', uploadApp);
 // tus-server end ======================
 
