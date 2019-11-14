@@ -65,7 +65,26 @@ tusServer.datastore = new MongoGridFSStore({
         } else {
             return 'file_' + (new ObjectId()).toHexString();
         }
-    }
+    },
+    filter: {
+        beforeCreate: async (req, file, grid_file) => {
+            tusLogger(`beforeCreate`, file, grid_file);
+            return true;
+            // return false;
+        },
+        afterCreate: async (req, file, grid_file, result) => {
+            tusLogger(`afterCreate`, file, grid_file, result);
+            return true;
+        },
+        beforeWrite: async (req, file, grid_file) => {
+            tusLogger(`beforeWrite`, file, grid_file);
+            return true;
+        },
+        afterWrite: async (req, file, grid_file) => {
+            tusLogger(`afterWrite`, file, grid_file);
+            return true;
+        },
+    },
 });
 tusServer.on(EVENTS.EVENT_UPLOAD_COMPLETE, (event: any) => {
     tusLogger(`Upload complete for file ${JSON.stringify(event)}`);
