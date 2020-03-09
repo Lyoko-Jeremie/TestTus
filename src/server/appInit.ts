@@ -70,6 +70,12 @@ tusServer.datastore = new MongoGridFSStore({
         beforeCreate: async (req, file, grid_file) => {
             tusLogger(`beforeCreate`, file, grid_file);
             tusLogger('beforeCreate getMetaData', getMetaData(req));
+
+            // add some Addition info to the metadata, those will save in the GridFS object metadata
+            grid_file.metadata.fileMetaCore = "detail.fileMetaCore";
+            grid_file.metadata.taskPath = "detail.taskPath";
+            grid_file.metadata.taskId = "detail.taskId";
+
             return true;
             // return false;
         },
