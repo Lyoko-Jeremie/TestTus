@@ -17,7 +17,7 @@ app.use(logger('dev'));
 // tus-server begin ======================
 import moment from 'moment';
 import {parseInt, ceil, floor, get} from 'lodash';
-import {TusServer, FileStore, MongoGridFSStore, EVENTS, EXPOSED_HEADERS_LIST} from 'tus-node-server';
+import {TusServer, FileStore, MongoGridFSStore, EVENTS, EXPOSED_HEADERS_LIST, getMetaData} from 'tus-node-server';
 import {ObjectId} from 'bson';
 import {Base64} from 'js-base64';
 import cors from 'cors';
@@ -69,6 +69,7 @@ tusServer.datastore = new MongoGridFSStore({
     filter: {
         beforeCreate: async (req, file, grid_file) => {
             tusLogger(`beforeCreate`, file, grid_file);
+            tusLogger('beforeCreate getMetaData', getMetaData(req));
             return true;
             // return false;
         },
@@ -78,7 +79,9 @@ tusServer.datastore = new MongoGridFSStore({
         },
         beforeWrite: async (req, file, grid_file) => {
             tusLogger(`beforeWrite`, file, grid_file);
-            return true;
+            tusLogger('beforeWrite getMetaData', getMetaData(req));
+            // return true;
+            return false;
         },
         afterWrite: async (req, file, grid_file) => {
             tusLogger(`afterWrite`, file, grid_file);
