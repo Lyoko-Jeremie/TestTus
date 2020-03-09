@@ -20,8 +20,8 @@ const u = new Upload(f, {
     endpoint: 'http://127.0.0.1:3000/uploads',
     resume: true,
     metadata: {
-        filename: 'README.md',
-        filetype: 'text/plain',
+        fileName: 'README.md',
+        fileType: 'text/plain',
     },
     uploadSize: s,
     onError: function(error) {
