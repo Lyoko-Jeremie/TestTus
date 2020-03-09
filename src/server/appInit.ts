@@ -86,8 +86,9 @@ tusServer.datastore = new MongoGridFSStore({
         beforeWrite: async (req, file, grid_file) => {
             tusLogger(`beforeWrite`, file, grid_file);
             tusLogger('beforeWrite getMetaData', getMetaData(req));
-            // return true;
-            return false;
+            // use false to forbidden this op
+            // return false;
+            return true;
         },
         afterWrite: async (req, file, grid_file) => {
             tusLogger(`afterWrite`, file, grid_file);
