@@ -8,8 +8,7 @@
     "run": "node ./build/index.js",
     "run:server": "node ./build/server/index.js",
     "run:server:watch": "nodemon ./build/server/index.js",
-    "run:client": "node ./build/client/index.js",
-    "yarn:upgrade:localDependency": "yarn upgrade ./../tus-node-server"
+    "run:client": "node ./build/client/index.js"
   },
   "dependencies": {
     "@types/bluebird": "^3.5.28",
