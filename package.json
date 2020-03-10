@@ -38,7 +38,7 @@
     "rxjs-tslint": "^0.1.7",
     "tslint": "^5.20.1",
     "tus-js-client": "^1.8.0",
-    "tus-node-server-ts": "^0.5.3",
+    "tus-node-server-ts": "^0.5.4",
     "typescript": "^3.7.2",
     "zone.js": "^0.10.2"
   }

@@ -2969,10 +2969,10 @@ tus-js-client@^1.8.0:
     proper-lockfile "^2.0.1"
     url-parse "^1.4.3"
 
-tus-node-server-ts@^0.5.3:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/tus-node-server-ts/-/tus-node-server-ts-0.5.3.tgz#d6b20beb07c1634a152146f79008a73eddc1cab9"
-  integrity sha512-4Ptxyfil2QNwwyMvksh5ZVMGoY5jHciCKA8d2L6y7kaslGfHq7vGnrxDzF+s58OHyK9jJR0a/Vp+D97RrMXdrw==
+tus-node-server-ts@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/tus-node-server-ts/-/tus-node-server-ts-0.5.4.tgz#8e5c8ecf9409fef9e1fcd779ebeca2c922ff1dcb"
+  integrity sha512-37/06QHsWV0Qs7230fzbiUGUUEjyTDgDcmNZoFeLRQWrfrIH9e5HXGfxMUlb1MJX0O03131ihaAAw5lSoVKK/A==
   dependencies:
     "@google-cloud/storage" "^2.4.2"
     "@types/configstore" "^4.0.0"
